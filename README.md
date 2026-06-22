@@ -1,2 +1,2 @@
 # Colecionarium
-the front end fouders of Colecionarium project FAETERJ
+the front end folders of Colecionarium project FAETERJ
