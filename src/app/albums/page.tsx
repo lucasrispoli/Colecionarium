@@ -22,9 +22,10 @@ export default function AlbumsPage() {
   if (isLoading || !isAuthenticated) return <Loading />;
 
   const handleCreate = async () => {
-    const name = prompt("Album name:");
-    if (!name) return;
-    await create({ name });
+    const title = prompt("Album title:");
+    if (!title) return;
+    const summary = prompt("Album summary:") || "";
+    await create({ title, summary });
     refetch();
   };
 

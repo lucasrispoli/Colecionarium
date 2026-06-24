@@ -27,9 +27,7 @@ export default function AlbumDetailPage({ params }: { params: Promise<{ id: stri
     if (id) {
       setPagesLoading(true);
       getPages()
-        .then((allPages) => {
-          setPages(allPages.filter((p) => p.albumId === id));
-        })
+        .then(setPages)
         .catch(() => console.error("Failed to fetch pages"))
         .finally(() => setPagesLoading(false));
     }
@@ -47,18 +45,19 @@ export default function AlbumDetailPage({ params }: { params: Promise<{ id: stri
   }
 
   const handleCreatePage = async () => {
-    const numberStr = prompt("Page number:");
-    if (!numberStr) return;
-    const number = parseInt(numberStr, 10);
-    if (isNaN(number)) return;
-
-    const title = prompt("Page title (optional):") || undefined;
+    const name = prompt("Page title:");
+    if (!name) return;
+    const description = prompt("Page description:") || "";
+    const slotsStr = prompt("Page slots:");
+    if (!slotsStr) return;
+    const slots = parseInt(slotsStr, 10);
+    if (isNaN(slots)) return;
 
     try {
       const newPage = await createPage({
-        albumId: id,
-        numberPage: number,
-        title,
+        name,
+        description,
+        slots,
       });
       setPages((prev) => [...prev, newPage]);
     } catch {
@@ -82,9 +81,9 @@ export default function AlbumDetailPage({ params }: { params: Promise<{ id: stri
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <a href="/albums" className="text-gray-600 hover:text-gray-900">
-              ← Albums
+              Albums
             </a>
-            <h1 className="text-xl font-bold">{album.name}</h1>
+            <h1 className="text-xl font-bold">{album.title}</h1>
           </div>
           <button
             onClick={handleDelete}
@@ -96,8 +95,8 @@ export default function AlbumDetailPage({ params }: { params: Promise<{ id: stri
       </header>
 
       <main className="max-w-7xl mx-auto px-4 py-8">
-        {album.description && (
-          <p className="text-gray-600 mb-6">{album.description}</p>
+        {album.summary && (
+          <p className="text-gray-600 mb-6">{album.summary}</p>
         )}
 
         <div className="flex items-center justify-between mb-6">

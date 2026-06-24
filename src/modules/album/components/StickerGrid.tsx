@@ -3,10 +3,9 @@ import StickerCard from "./StickerCard";
 
 interface StickerGridProps {
   stickers: AlbumSticker[];
-  onToggleCollected?: (id: string) => void;
 }
 
-export default function StickerGrid({ stickers, onToggleCollected }: StickerGridProps) {
+export default function StickerGrid({ stickers }: StickerGridProps) {
   if (stickers.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500">No stickers found</div>
@@ -16,11 +15,7 @@ export default function StickerGrid({ stickers, onToggleCollected }: StickerGrid
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {stickers.map((sticker) => (
-        <StickerCard
-          key={sticker.id}
-          sticker={sticker}
-          onToggleCollected={onToggleCollected}
-        />
+        <StickerCard key={sticker.id} sticker={sticker} />
       ))}
     </div>
   );

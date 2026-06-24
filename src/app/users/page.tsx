@@ -19,7 +19,7 @@ export default function UsersPage() {
   if (isLoading) return <Loading />;
   if (!isAuthenticated) return null;
 
-  const hasAdminRole = user?.roles.some(
+  const hasAdminRole = user?.roles?.some(
     (r) => r.name === "ADM" || r.name === "DEV"
   );
 

@@ -1,4 +1,11 @@
-import { AuthResponse, LoginRequest, User } from "../types/User";
+import {
+  AuthResponse,
+  LoginRequest,
+  PageResponse,
+  RefreshTokenRequest,
+  User,
+  UserInput,
+} from "../types/User";
 
 export async function login(data: LoginRequest): Promise<AuthResponse> {
   const { http } = await import("@/shared/services/http");
@@ -9,16 +16,16 @@ export async function login(data: LoginRequest): Promise<AuthResponse> {
   });
 }
 
-export async function refreshToken(refreshToken: string): Promise<AuthResponse> {
+export async function refreshToken(data: RefreshTokenRequest): Promise<AuthResponse> {
   const { http } = await import("@/shared/services/http");
   return http<AuthResponse>("/auth/refresh", {
     method: "POST",
-    headers: { "Refresh-Token": refreshToken },
+    body: data,
     requireAuth: false,
   });
 }
 
-export async function signup(data: { username: string; password: string }): Promise<User> {
+export async function signup(data: LoginRequest): Promise<User> {
   const { http } = await import("@/shared/services/http");
   return http<User>("/user/signup", {
     method: "POST",
@@ -27,9 +34,9 @@ export async function signup(data: { username: string; password: string }): Prom
   });
 }
 
-export async function getUsers(): Promise<User[]> {
+export async function getUsers(): Promise<PageResponse<User>> {
   const { http } = await import("@/shared/services/http");
-  return http<User[]>("/user");
+  return http<PageResponse<User>>("/user");
 }
 
 export async function getUserById(id: string): Promise<User> {
@@ -42,7 +49,7 @@ export async function getUserByUsername(username: string): Promise<User> {
   return http<User>(`/user/username/${username}`);
 }
 
-export async function createUser(data: { username: string; password: string; roleIds?: string[] }): Promise<User> {
+export async function createUser(data: UserInput): Promise<User> {
   const { http } = await import("@/shared/services/http");
   return http<User>("/user/create", {
     method: "POST",
@@ -50,7 +57,7 @@ export async function createUser(data: { username: string; password: string; rol
   });
 }
 
-export async function updateUser(id: string, data: Partial<User>): Promise<User> {
+export async function updateUser(id: string, data: UserInput): Promise<User> {
   const { http } = await import("@/shared/services/http");
   return http<User>(`/user/${id}`, {
     method: "PUT",
@@ -65,17 +72,16 @@ export async function deleteUser(id: string): Promise<void> {
   });
 }
 
-export async function updatePassword(id: string, newPassword: string): Promise<void> {
+export async function updatePassword(id: string, password: string): Promise<void> {
   const { http } = await import("@/shared/services/http");
-  return http<void>(`/user/${id}/password`, {
+  return http<void>(`/user/${id}/password?password=${encodeURIComponent(password)}`, {
     method: "PATCH",
-    body: { newPassword },
   });
 }
 
 export async function lockUser(id: string, until?: string): Promise<void> {
   const { http } = await import("@/shared/services/http");
-  const query = until ? `?until=${until}` : "";
+  const query = until ? `?until=${encodeURIComponent(until)}` : "";
   return http<void>(`/user/${id}/lock${query}`, {
     method: "PATCH",
   });

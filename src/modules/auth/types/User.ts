@@ -1,7 +1,7 @@
-export interface User {
+export interface UserDto {
   id: string;
   username: string;
-  roles: Role[];
+  roles: Role[] | null;
   accountLocked: boolean;
   createdAt: string;
   lastLoginAt: string | null;
@@ -9,14 +9,24 @@ export interface User {
   updatedAt: string | null;
 }
 
-export interface Role {
+export interface RoleDto {
   id: string;
   name: string;
 }
 
-export interface LoginRequest {
+export interface UserCredentialDto {
+  id: string;
+  credential: string;
+  credentialType: CredentialType;
+}
+
+export interface UserAuthInputDto {
   username: string;
   password: string;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
 }
 
 export interface AuthResponse {
@@ -26,11 +36,54 @@ export interface AuthResponse {
   expiresIn: number;
 }
 
-export interface CreateUserRequest {
+export interface UserInputDto {
   username: string;
   password: string;
+  roleIds?: string[];
 }
 
-export interface UpdatePasswordRequest {
-  newPassword: string;
+export interface UserCredentialInputDto {
+  credential: string;
+  credentialType: CredentialType;
+}
+
+export interface RoleInputDto {
+  name: string;
+}
+
+export interface PageResponse<T> {
+  content: T[];
+  pageable: {
+    pageNumber: number;
+    pageSize: number;
+    sort: PageSort;
+    offset: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  last: boolean;
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  number: number;
+  sort: PageSort;
+  first: boolean;
+  numberOfElements: number;
+  empty: boolean;
+}
+
+export type User = UserDto;
+export type Role = RoleDto;
+export type UserCredential = UserCredentialDto;
+export type LoginRequest = UserAuthInputDto;
+export type CreateUserRequest = UserInputDto;
+export type UserInput = UserInputDto;
+export type UserCredentialInput = UserCredentialInputDto;
+export type RoleInput = RoleInputDto;
+export type CredentialType = "EMAIL" | "PHONE" | "STEAMID";
+
+export interface PageSort {
+  empty: boolean;
+  sorted: boolean;
+  unsorted: boolean;
 }

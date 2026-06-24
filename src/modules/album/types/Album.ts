@@ -1,49 +1,51 @@
-export interface Album {
+export interface AlbumDto {
+  id: string;
+  title: string;
+  summary: string;
+  authorId: string;
+}
+
+export interface AlbumPageDto {
+  id: string;
+  title: string;
+  description: string;
+  slots: number;
+  numberPage: number;
+}
+
+export interface AlbumStickerDto {
   id: string;
   name: string;
-  description?: string;
-  coverUrl?: string;
-  createdAt: string;
-  updatedAt: string | null;
-}
-
-export interface AlbumPage {
-  id: string;
-  albumId: string;
-  numberPage: number;
-  title?: string;
-  createdAt: string;
-  updatedAt: string | null;
-}
-
-export interface AlbumSticker {
-  id: string;
+  description: string;
+  slot: number;
+  imageTag: string;
   pageId: string;
-  number: number;
-  name?: string;
-  description?: string;
-  imageUrl?: string;
-  collected: boolean;
-  createdAt: string;
-  updatedAt: string | null;
+  photo: string | null;
 }
 
-export interface CreateAlbumRequest {
+export interface AlbumInputDto {
+  title: string;
+  summary: string;
+}
+
+export interface AlbumPageInputDto {
   name: string;
-  description?: string;
-  coverUrl?: string;
+  description: string;
+  slots: number;
 }
 
-export interface CreatePageRequest {
-  albumId: string;
-  numberPage: number;
-  title?: string;
-}
-
-export interface CreateStickerRequest {
+export interface AlbumStickerInputDto {
+  name: string;
+  description: string;
+  slot: number;
+  imageTag: string;
   pageId: string;
-  number: number;
-  name?: string;
-  description?: string;
-  imageUrl?: string;
+  photo: string | null;
 }
+
+export type Album = AlbumDto;
+export type AlbumPage = AlbumPageDto;
+export type AlbumSticker = AlbumStickerDto;
+export type AlbumInput = AlbumInputDto;
+export type AlbumPageInput = AlbumPageInputDto;
+export type AlbumStickerInput = AlbumStickerInputDto;

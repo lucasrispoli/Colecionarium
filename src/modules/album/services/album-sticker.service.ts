@@ -1,4 +1,4 @@
-import { AlbumSticker, CreateStickerRequest } from "../types/Album";
+import { AlbumSticker, AlbumStickerInput } from "../types/Album";
 
 export async function getStickers(
   pageId?: string
@@ -14,7 +14,7 @@ export async function getStickerById(id: string): Promise<AlbumSticker> {
 }
 
 export async function createSticker(
-  data: CreateStickerRequest
+  data: AlbumStickerInput
 ): Promise<AlbumSticker> {
   const { http } = await import("@/shared/services/http");
   return http<AlbumSticker>("/sticker", {
@@ -25,7 +25,7 @@ export async function createSticker(
 
 export async function updateSticker(
   id: string,
-  data: Partial<AlbumSticker>
+  data: AlbumStickerInput
 ): Promise<AlbumSticker> {
   const { http } = await import("@/shared/services/http");
   return http<AlbumSticker>(`/sticker/${id}`, {

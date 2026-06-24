@@ -14,7 +14,7 @@ export default function UserTable() {
     setIsLoading(true);
     try {
       const data = await getUsers();
-      setUsers(data);
+      setUsers(data.content);
     } catch {
       console.error("Failed to fetch users");
     } finally {
@@ -72,7 +72,7 @@ export default function UserTable() {
             <tr key={user.id} className="hover:bg-gray-50">
               <td className="p-3 border">{user.username}</td>
               <td className="p-3 border">
-                {user.roles.map((r) => r.name).join(", ")}
+                {(user.roles ?? []).map((r) => r.name).join(", ")}
               </td>
               <td className="p-3 border">
                 <span

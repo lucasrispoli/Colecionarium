@@ -1,4 +1,4 @@
-import { Album, CreateAlbumRequest } from "../types/Album";
+import { Album, AlbumInput } from "../types/Album";
 
 export async function getAlbums(): Promise<Album[]> {
   const { http } = await import("@/shared/services/http");
@@ -10,7 +10,7 @@ export async function getAlbumById(id: string): Promise<Album> {
   return http<Album>(`/album/${id}`);
 }
 
-export async function createAlbum(data: CreateAlbumRequest): Promise<Album> {
+export async function createAlbum(data: AlbumInput): Promise<Album> {
   const { http } = await import("@/shared/services/http");
   return http<Album>("/album", {
     method: "POST",
@@ -20,7 +20,7 @@ export async function createAlbum(data: CreateAlbumRequest): Promise<Album> {
 
 export async function updateAlbum(
   id: string,
-  data: Partial<Album>
+  data: AlbumInput
 ): Promise<Album> {
   const { http } = await import("@/shared/services/http");
   return http<Album>(`/album/${id}`, {

@@ -1,4 +1,4 @@
-import { AlbumPage, CreatePageRequest } from "../types/Album";
+import { AlbumPage, AlbumPageInput } from "../types/Album";
 
 export async function getPages(): Promise<AlbumPage[]> {
   const { http } = await import("@/shared/services/http");
@@ -18,7 +18,7 @@ export async function getPageByNumber(
 }
 
 export async function createPage(
-  data: CreatePageRequest
+  data: AlbumPageInput
 ): Promise<AlbumPage> {
   const { http } = await import("@/shared/services/http");
   return http<AlbumPage>("/page", {
@@ -29,7 +29,7 @@ export async function createPage(
 
 export async function updatePage(
   id: string,
-  data: Partial<AlbumPage>
+  data: AlbumPageInput
 ): Promise<AlbumPage> {
   const { http } = await import("@/shared/services/http");
   return http<AlbumPage>(`/page/${id}`, {

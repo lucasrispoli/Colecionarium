@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { Album } from "../types/Album";
+import { Album, AlbumInput } from "../types/Album";
 import {
   getAlbums,
   getAlbumById,
@@ -47,7 +47,7 @@ export function useAlbum(id: string) {
   }, [id]);
 
   const update = useCallback(
-    async (data: Partial<Album>) => {
+    async (data: AlbumInput) => {
       if (!id) return;
       const updated = await updateAlbum(id, data);
       setAlbum(updated);
@@ -68,7 +68,7 @@ export function useCreateAlbum() {
   const [isLoading, setIsLoading] = useState(false);
 
   const create = useCallback(
-    async (data: { name: string; description?: string; coverUrl?: string }) => {
+    async (data: AlbumInput) => {
       setIsLoading(true);
       try {
         const album = await createAlbum(data);

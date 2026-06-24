@@ -2,15 +2,9 @@ import { AlbumPage } from "../types/Album";
 
 interface AlbumPageCardProps {
   page: AlbumPage;
-  stickerCount?: number;
-  collectedCount?: number;
 }
 
-export default function AlbumPageCard({
-  page,
-  stickerCount = 0,
-  collectedCount = 0,
-}: AlbumPageCardProps) {
+export default function AlbumPageCard({ page }: AlbumPageCardProps) {
   return (
     <a
       href={`/stickers/${page.id}`}
@@ -22,21 +16,12 @@ export default function AlbumPageCard({
           {page.title && (
             <p className="text-gray-600 text-sm">{page.title}</p>
           )}
+          {page.description && (
+            <p className="text-gray-500 text-sm">{page.description}</p>
+          )}
         </div>
         <div className="text-right text-sm text-gray-500">
-          <div>
-            {collectedCount}/{stickerCount} collected
-          </div>
-          <div className="w-24 bg-gray-200 rounded-full h-2 mt-1">
-            <div
-              className="bg-blue-600 h-2 rounded-full transition-all"
-              style={{
-                width: `${
-                  stickerCount > 0 ? (collectedCount / stickerCount) * 100 : 0
-                }%`,
-              }}
-            />
-          </div>
+          <div>{page.slots} slots</div>
         </div>
       </div>
     </a>

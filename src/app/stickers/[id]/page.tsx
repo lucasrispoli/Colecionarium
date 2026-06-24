@@ -1,12 +1,11 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { use, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/modules/auth/hooks/useAuth";
 import Loading from "@/shared/components/Loading";
 import { useStickers } from "@/modules/album/hooks/useSticker";
-import { AlbumSticker } from "@/modules/album/types/Album";
-import { createSticker, updateSticker } from "@/modules/album/services/album-sticker.service";
+import { createSticker } from "@/modules/album/services/album-sticker.service";
 import StickerGrid from "@/modules/album/components/StickerGrid";
 
 export default function StickerPage({ params }: { params: Promise<{ id: string }> }) {
@@ -23,31 +22,24 @@ export default function StickerPage({ params }: { params: Promise<{ id: string }
 
   if (isLoading || !isAuthenticated) return <Loading />;
 
-  const handleToggleCollected = async (stickerId: string) => {
-    const sticker = stickers.find((s) => s.id === stickerId);
-    if (!sticker) return;
-
-    try {
-      await updateSticker(stickerId, { collected: !sticker.collected });
-      refetch();
-    } catch {
-      console.error("Failed to update sticker");
-    }
-  };
-
   const handleCreateSticker = async () => {
-    const numberStr = prompt("Sticker number:");
-    if (!numberStr) return;
-    const number = parseInt(numberStr, 10);
-    if (isNaN(number)) return;
+    const slotStr = prompt("Sticker slot:");
+    if (!slotStr) return;
+    const slot = parseInt(slotStr, 10);
+    if (isNaN(slot)) return;
 
-    const name = prompt("Sticker name (optional):") || undefined;
+    const name = prompt("Sticker name:") || "";
+    const description = prompt("Sticker description:") || "";
+    const imageTag = prompt("Sticker image tag:") || "";
 
     try {
       await createSticker({
         pageId: id,
-        number,
+        slot,
         name,
+        description,
+        imageTag,
+        photo: null,
       });
       refetch();
     } catch {
@@ -61,7 +53,7 @@ export default function StickerPage({ params }: { params: Promise<{ id: string }
         <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
           <div className="flex items-center gap-4">
             <a href="/albums" className="text-gray-600 hover:text-gray-900">
-              ← Albums
+              Albums
             </a>
             <h1 className="text-xl font-bold">Stickers</h1>
           </div>
@@ -72,10 +64,7 @@ export default function StickerPage({ params }: { params: Promise<{ id: string }
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-2xl font-bold">Page Stickers</h2>
-            <p className="text-gray-500 text-sm mt-1">
-              {stickers.filter((s) => s.collected).length} / {stickers.length}{" "}
-              collected
-            </p>
+            <p className="text-gray-500 text-sm mt-1">{stickers.length} stickers</p>
           </div>
           <button
             onClick={handleCreateSticker}
@@ -88,10 +77,7 @@ export default function StickerPage({ params }: { params: Promise<{ id: string }
         {stickersLoading ? (
           <Loading />
         ) : (
-          <StickerGrid
-            stickers={stickers}
-            onToggleCollected={handleToggleCollected}
-          />
+          <StickerGrid stickers={stickers} />
         )}
       </main>
     </div>

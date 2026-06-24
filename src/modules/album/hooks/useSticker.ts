@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { AlbumSticker } from "../types/Album";
+import { AlbumSticker, AlbumStickerInput } from "../types/Album";
 import {
   getStickers,
   getStickerById,
@@ -47,7 +47,7 @@ export function useSticker(id: string) {
   }, [id]);
 
   const update = useCallback(
-    async (data: Partial<AlbumSticker>) => {
+    async (data: AlbumStickerInput) => {
       if (!id) return;
       const updated = await updateSticker(id, data);
       setSticker(updated);
@@ -56,34 +56,19 @@ export function useSticker(id: string) {
     [id]
   );
 
-  const toggleCollected = useCallback(async () => {
-    if (!sticker) return;
-    const updated = await updateSticker(sticker.id, {
-      collected: !sticker.collected,
-    });
-    setSticker(updated);
-    return updated;
-  }, [sticker]);
-
   const remove = useCallback(async () => {
     if (!id) return;
     await deleteSticker(id);
   }, [id]);
 
-  return { sticker, isLoading, update, toggleCollected, remove };
+  return { sticker, isLoading, update, remove };
 }
 
 export function useCreateSticker() {
   const [isLoading, setIsLoading] = useState(false);
 
   const create = useCallback(
-    async (data: {
-      pageId: string;
-      number: number;
-      name?: string;
-      description?: string;
-      imageUrl?: string;
-    }) => {
+    async (data: AlbumStickerInput) => {
       setIsLoading(true);
       try {
         const sticker = await createSticker(data);
