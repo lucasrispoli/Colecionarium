@@ -7,6 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import Cookies from "js-cookie";
 import { AuthResponse, LoginRequest, User } from "../types/User";
 import { login as loginService } from "../services/auth.service";
 
@@ -25,16 +26,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    const userData = localStorage.getItem("user");
-    if (token && userData) {
+    const token = Cookies.get("accessToken");
+    const userDataStr = localStorage.getItem("user");
+    if (token && userDataStr) {
       try {
-        setUser(JSON.parse(userData));
+        setUser(JSON.parse(userDataStr));
       } catch {
-        localStorage.removeItem("accessToken");
-        localStorage.removeItem("refreshToken");
+        Cookies.remove("accessToken");
+        Cookies.remove("refreshToken");
         localStorage.removeItem("user");
       }
+    } else {
+      Cookies.remove("accessToken");
+      Cookies.remove("refreshToken");
+      localStorage.removeItem("user");
     }
     setIsLoading(false);
   }, []);
@@ -42,8 +47,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = useCallback(async (data: LoginRequest) => {
     const response: AuthResponse = await loginService(data);
 
-    localStorage.setItem("accessToken", response.accessToken);
-    localStorage.setItem("refreshToken", response.refreshToken);
+    Cookies.set("accessToken", response.accessToken, { secure: true, sameSite: "strict" });
+    Cookies.set("refreshToken", response.refreshToken, { secure: true, sameSite: "strict" });
 
     const payload = JSON.parse(
       atob(response.accessToken.split(".")[1])
@@ -68,8 +73,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
     localStorage.removeItem("user");
     setUser(null);
   }, []);

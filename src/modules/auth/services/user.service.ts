@@ -1,8 +1,9 @@
 import { PageResponse, User, UserInput } from "../types/User";
 
-export async function getUsers(): Promise<PageResponse<User>> {
+export async function getUsers(filter?: string): Promise<PageResponse<User>> {
   const { http } = await import("@/shared/services/http");
-  return http<PageResponse<User>>("/user");
+  const query = filter ? `?filter=${encodeURIComponent(filter)}` : "";
+  return http<PageResponse<User>>(`/user${query}`);
 }
 
 export async function getUserById(id: string): Promise<User> {

@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { API_URL, CLIENT_ID, CLIENT_SECRET } from "./api";
 
 type HttpMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
@@ -9,24 +10,22 @@ interface RequestOptions {
   requireAuth?: boolean;
 }
 
-function getToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("accessToken");
+function getToken(): string | undefined {
+  return Cookies.get("accessToken");
 }
 
-function getRefreshToken(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem("refreshToken");
+function getRefreshToken(): string | undefined {
+  return Cookies.get("refreshToken");
 }
 
 function saveTokens(accessToken: string, refreshToken: string) {
-  localStorage.setItem("accessToken", accessToken);
-  localStorage.setItem("refreshToken", refreshToken);
+  Cookies.set("accessToken", accessToken, { secure: true, sameSite: "strict" });
+  Cookies.set("refreshToken", refreshToken, { secure: true, sameSite: "strict" });
 }
 
 function clearTokens() {
-  localStorage.removeItem("accessToken");
-  localStorage.removeItem("refreshToken");
+  Cookies.remove("accessToken");
+  Cookies.remove("refreshToken");
 }
 
 async function refreshAccessToken(): Promise<boolean> {
