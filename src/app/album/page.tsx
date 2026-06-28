@@ -17,7 +17,7 @@ export default function AlbumPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Álbum de Figurinhas</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-            {isAuthor ? "Gerencie as figurinhas do álbum." : "Visualize as figurinhas da coleção."}
+            {isAuthor ? "Gerencie as figurinhas do álbum." : "Visualize as suas figurinhas da coleção."}
           </p>
         </div>
       </div>
