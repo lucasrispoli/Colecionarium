@@ -1,4 +1,4 @@
-"use client";
+"use client"; /*TELA DE MUDAR SENHA*/
 
 import { useState } from "react";
 import { http } from "../services/http";
@@ -116,7 +116,7 @@ export default function ChangePasswordModal({ onClose }: Props) {
             <button
               type="submit"
               disabled={isLoading}
-              className="mt-4 w-full py-3 px-4 bg-gradient-to-r from-indigo-500 to-fuchsia-500 hover:from-indigo-400 hover:to-fuchsia-400 text-white font-semibold rounded-xl transition-all shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
+              className="mt-4 w-full py-3 px-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all shadow-lg disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {isLoading ? "Atualizando..." : "Salvar"}
             </button>

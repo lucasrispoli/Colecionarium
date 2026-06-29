@@ -1,4 +1,4 @@
-"use client";
+"use client"; /*TELA DE SOBRE*/
 
 interface Props {
   onClose: () => void;

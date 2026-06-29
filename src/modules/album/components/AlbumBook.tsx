@@ -135,7 +135,7 @@ export default function AlbumBook({ isAuthor }: Props) {
     <div className="flex flex-col gap-6">
       
       {/* Book Controls */}
-      <div className="flex flex-col sm:flex-row justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
+      <div className="flex flex-col sm:flex-row justify-between items-center bg-black/80 dark:bg-black/80 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex items-center gap-4">
           <button 
             onClick={prevPage}
@@ -201,7 +201,7 @@ export default function AlbumBook({ isAuthor }: Props) {
       </div>
 
       {/* Book Page Area */}
-      <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-md rounded-[2rem] shadow-xl border border-gray-200 dark:border-gray-700 min-h-[600px] p-8 flex flex-col items-center relative overflow-hidden ring-4 ring-white/50 dark:ring-gray-800/50">
+      <div className="bg-black/80 dark:bg-black/80 backdrop-blur-md rounded-[2rem] shadow-xl border border-gray-200 dark:border-gray-700 min-h-[600px] p-8 flex flex-col items-center relative overflow-hidden ring-4 ring-white/50 dark:ring-gray-800/50">
         
         {/* Book spine decorative effect */}
         <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-gray-200 to-transparent dark:from-gray-900/50" />
@@ -273,7 +273,7 @@ export default function AlbumBook({ isAuthor }: Props) {
         ) : (
           <div className="flex flex-col items-center justify-center h-full text-center py-20">
             <svg className="w-20 h-20 text-gray-300 mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" /></svg>
-            <h3 className="text-xl font-bold text-gray-600 dark:text-gray-300">O Álbum está vazio</h3>
+            <h3 className="text-xl font-bold text-white">O Álbum está vazio</h3>
             {isAuthor && (
               <button onClick={handleCreatePage} className="mt-6 px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold shadow-lg shadow-indigo-500/30">
                 Criar Primeira Página

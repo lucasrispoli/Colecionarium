@@ -1,5 +1,7 @@
 import { InputHTMLAttributes, forwardRef } from "react";
 
+/*FORMULARIO */ 
+
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;

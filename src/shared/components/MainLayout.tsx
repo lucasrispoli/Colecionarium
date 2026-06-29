@@ -19,9 +19,9 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
   if (isLoading || !isAuthenticated) return <Loading />;
 
   return (
-     <div className="min-h-screen bg-[#101827] text-white flex flex-col">
-    <Topbar />
-      <main className="flex-1 pt-16 p-4 overflow-y-auto w-full">
+<div className="min-h-screen bg-blue-950 text-black flex flex-col">
+        <Topbar />
+      <main className="flex-1 pt-22 p-4 overflow-y-auto w-full">
         <div className="max-w-7xl mx-auto h-full w-full">
           {children}
         </div>

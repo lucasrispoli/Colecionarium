@@ -22,7 +22,7 @@ export default function Topbar() {
 
   return (
     <>
-      <header className="w-full bg-white/10 backdrop-blur-xl border-b border-white/10 shadow-sm z-40 fixed top-0 left-0 right-0 h-16 flex items-center px-6 justify-between">
+      <header className="w-full bg-black/80 backdrop-blur-x1 border-b border-white/70 shadow-sm z-40 fixed top-0 left-0 bottom-10 right-0 h-16 flex items-center px-6 justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-gradient-to-tr from-indigo-500 to-fuchsia-500 rounded-lg flex items-center justify-center shadow-md">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
