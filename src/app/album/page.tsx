@@ -8,7 +8,7 @@ export default function AlbumPage() {
   const { user } = useAuth();
 
   const isAuthor = user?.roles?.some(
-    (r) => r.name === "AUTOR" || r.name === "ROLE_AUTOR" || r.name === "ADM" || r.name === "ROLE_ADM"
+    (r) => r.name === "AUTHOR" || r.name === "ROLE_AUTHOR" || r.name === "ADM" || r.name === "ROLE_ADM"
   );
 
   return (
@@ -23,7 +23,7 @@ export default function AlbumPage() {
       </div>
       
       <div className="w-full max-w-5xl mx-auto">
-        <AlbumBook isAuthor={!!isAuthor} />
+        <AlbumBook isAuthor={true} />
       </div>
     </MainLayout>
   );

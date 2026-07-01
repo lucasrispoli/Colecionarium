@@ -7,7 +7,7 @@ interface AlbumCardProps {
 export default function AlbumCard({ album }: AlbumCardProps) {
   return (
     <a
-      href={`/albums/${album.id}`}
+      href={`/album/${album.id}`}
       className="block border rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
     >
       <div className="h-40 bg-gray-200 flex items-center justify-center">

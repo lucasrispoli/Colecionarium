@@ -21,7 +21,7 @@ export default function LoginForm() {
 
     try {
       await login({ username, password });
-      router.push("/albums");
+      router.push("/album");
     } catch (err: unknown) {
       const apiError = err as { title?: string };
       setError(apiError.title || "Login failed");

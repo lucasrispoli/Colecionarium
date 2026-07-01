@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createUser, updateUser, updatePassword } from "../services/user.service";
+import {
+  createUser,
+  updateUser,
+  updatePassword,
+} from "../services/user.service";
 import { User, UserInput } from "../types/User";
 
 interface Props {
@@ -13,7 +17,9 @@ interface Props {
 export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
   const [username, setUsername] = useState(userToEdit?.username || "");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState(userToEdit?.roles?.[0]?.name.replace("ROLE_", "") || "ADM");
+  const [role, setRole] = useState(
+    userToEdit?.roles?.[0]?.name.replace("ROLE_", "") || "ADM",
+  );
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -78,7 +84,9 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
-        <h2 className="text-2xl font-bold mb-6">{userToEdit ? "Editar Usuário" : "Novo Usuário"}</h2>
+        <h2 className="text-2xl font-bold mb-6">
+          {userToEdit ? "Editar Usuário" : "Novo Usuário"}
+        </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {error && (
@@ -95,7 +103,7 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-800"
               required
             />
           </div>
@@ -109,7 +117,7 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
                 <button
                   type="button"
                   onClick={handleResetPassword}
-                  className="text-xs text-indigo-500 hover:text-indigo-600 font-semibold"
+                  className="text-xs text-blue-800 hover:text-indigo-600 font-semibold"
                 >
                   Zerar Senha
                 </button>
@@ -119,7 +127,7 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-800"
               required={!userToEdit}
             />
           </div>
@@ -131,7 +139,7 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none"
+              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-800 appearance-none"
               required
             >
               <option value="ADM">Administrador</option>
@@ -151,7 +159,7 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/30 disabled:opacity-70"
+              className="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-800/30 disabled:opacity-70"
             >
               {isLoading ? "Salvando..." : "Salvar"}
             </button>
