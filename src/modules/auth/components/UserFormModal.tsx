@@ -1,7 +1,11 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { createUser, updateUser, updatePassword } from "../services/user.service";
+import {
+  createUser,
+  updateUser,
+  resetPassword,
+} from "../services/user.service";
 import { User, UserInput } from "../types/User";
 
 interface Props {
@@ -13,16 +17,28 @@ interface Props {
 export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
   const [username, setUsername] = useState(userToEdit?.username || "");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState(userToEdit?.roles?.[0]?.name.replace("ROLE_", "") || "ADM");
+  const [roles, setRoles] = useState<string[]>(
+    userToEdit?.roles?.map((r) => r.name.replace("ROLE_", "")) || ["ADM"]
+  );
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (userToEdit) {
       setUsername(userToEdit.username);
-      setRole(userToEdit.roles?.[0]?.name.replace("ROLE_", "") || "ADM");
+      setRoles(userToEdit.roles?.map((r) => r.name.replace("ROLE_", "")) || ["ADM"]);
     }
   }, [userToEdit]);
+
+  const handleRoleChange = (role: string) => {
+    setRoles((prev) => {
+      if (prev.includes(role)) {
+        if (prev.length === 1) return prev; // prevent empty roles
+        return prev.filter((r) => r !== role);
+      }
+      return [...prev, role];
+    });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,7 +60,7 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
       const payload: UserInput = {
         username,
         password: password || undefined,
-        roles: [role],
+        roles,
         accountLocked: userToEdit ? userToEdit.accountLocked : false,
       };
 
@@ -65,9 +81,8 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
     if (!userToEdit) return;
     setIsLoading(true);
     try {
-      // Zerar senha gera senha padrao 123456 (ou username)
-      await updatePassword(userToEdit.id, "123456");
-      alert("Senha redefinida para '123456'");
+      await resetPassword(userToEdit.id);
+      alert("Senha redefinida para 'collecionarium@123'");
     } catch (err: any) {
       setError(err.title || "Erro ao zerar senha");
     } finally {
@@ -115,29 +130,38 @@ export default function UserFormModal({ userToEdit, onClose, onSaved }: Props) {
                 </button>
               )}
             </div>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
-              required={!userToEdit}
-            />
+            {!userToEdit && (
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-800"
+                required={!userToEdit}
+              />
+            )}
           </div>
 
           <div>
             <label className="block text-xs font-semibold uppercase tracking-wider mb-2 text-gray-500 dark:text-gray-400">
-              Perfil
+              Perfis
             </label>
-            <select
-              value={role}
-              onChange={(e) => setRole(e.target.value)}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 appearance-none"
-              required
-            >
-              <option value="ADM">Administrador</option>
-              <option value="AUTOR">Autor</option>
-              <option value="COLECIONADOR">Colecionador</option>
-            </select>
+            <div className="flex flex-col gap-2">
+              {[
+                { value: "ADM", label: "Administrador" },
+                { value: "AUTOR", label: "Autor" },
+                { value: "COLECIONADOR", label: "Colecionador" },
+              ].map((roleOption) => (
+                <label key={roleOption.value} className="flex items-center gap-2 text-sm text-gray-700 dark:text-gray-300">
+                  <input
+                    type="checkbox"
+                    checked={roles.includes(roleOption.value)}
+                    onChange={() => handleRoleChange(roleOption.value)}
+                    className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                  />
+                  {roleOption.label}
+                </label>
+              ))}
+            </div>
           </div>
 
           <div className="flex gap-3 mt-4">

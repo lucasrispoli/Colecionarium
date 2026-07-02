@@ -9,15 +9,24 @@ import encHex from "crypto-js/enc-hex";
 
 interface Props {
   pageId: string;
+  slotPreset?: number | null;
   stickerToEdit?: AlbumSticker | null;
   onClose: () => void;
   onSaved: () => void;
 }
 
-export default function StickerFormModal({ pageId, stickerToEdit, onClose, onSaved }: Props) {
+export default function StickerFormModal({
+  pageId,
+  slotPreset,
+  stickerToEdit,
+  onClose,
+  onSaved,
+}: Props) {
   const [name, setName] = useState(stickerToEdit?.name || "");
-  const [slot, setSlot] = useState<number>(stickerToEdit?.slot || 1);
-  const [description, setDescription] = useState(stickerToEdit?.description || "");
+  const [slot, setSlot] = useState<number>(stickerToEdit?.slot || slotPreset || 1);
+  const [description, setDescription] = useState(
+    stickerToEdit?.description || "",
+  );
   const [imageTag, setImageTag] = useState(stickerToEdit?.imageTag || "");
   const [photo, setPhoto] = useState<string | null>(stickerToEdit?.photo || null);
   

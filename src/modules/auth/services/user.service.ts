@@ -49,6 +49,13 @@ export async function updatePassword(
   });
 }
 
+export async function resetPassword(id: string): Promise<void> {
+  const { http } = await import("@/shared/services/http");
+  return http<void>(`/user/${id}/reset-password`, {
+    method: "POST",
+  });
+}
+
 export async function lockUser(id: string, until?: string): Promise<void> {
   const { http } = await import("@/shared/services/http");
   const query = until ? `?until=${encodeURIComponent(until)}` : "";

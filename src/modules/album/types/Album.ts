@@ -29,9 +29,10 @@ export interface AlbumInputDto {
 }
 
 export interface AlbumPageInputDto {
-  name: string;
+  title: string;
   description: string;
   slots: number;
+  albumId: string;
 }
 
 export interface AlbumStickerInputDto {
