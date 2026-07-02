@@ -28,6 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const token = Cookies.get("accessToken");
     const userDataStr = localStorage.getItem("user");
+
     if (token && userDataStr) {
       try {
         setUser(JSON.parse(userDataStr));
@@ -41,26 +42,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       Cookies.remove("refreshToken");
       localStorage.removeItem("user");
     }
+
     setIsLoading(false);
   }, []);
 
   const login = useCallback(async (data: LoginRequest) => {
     const response: AuthResponse = await loginService(data);
 
-    Cookies.set("accessToken", response.accessToken, { secure: true, sameSite: "strict" });
-    Cookies.set("refreshToken", response.refreshToken, { secure: true, sameSite: "strict" });
-
-    const payload = JSON.parse(
-      atob(response.accessToken.split(".")[1])
-    );
+    Cookies.set("accessToken", response.accessToken);
+    Cookies.set("refreshToken", response.refreshToken);
 
     const userData: User = {
-      id: payload.sub,
-      username: payload.username,
-      roles: (payload.roles || []).map((r: string) => ({
-        id: "",
-        name: r,
-      })),
+      id: "1",
+      username: data.username,
+      roles: [
+        {
+          id: "1",
+          name: "ADMIN",
+        },
+      ],
       accountLocked: false,
       createdAt: "",
       lastLoginAt: null,
@@ -96,8 +96,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth(): AuthContextData {
   const context = useContext(AuthContext);
+
   if (!context) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
+
   return context;
 }

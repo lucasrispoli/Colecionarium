@@ -12,8 +12,9 @@ function getRedirectPath(user: User | null) {
   const roles = user.roles.map((r) => r.name);
   if (roles.includes("ROLE_ADM") || roles.includes("ADM")) {
     return "/admin/users";
+  } else {
+    return "/album"; // Default for Autor and Colecionador
   }
-  return "/album"; // Default for Autor and Colecionador
 }
 
 export default function LoginPage() {
@@ -29,12 +30,23 @@ export default function LoginPage() {
   if (isLoading || isAuthenticated) return <Loading />;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-900 via-purple-900 to-black p-4">
-      <div className="w-full max-w-md bg-white/10 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl transition-all duration-300">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-900 via-blue-700 to-black text-white p-4">
+      <div className="w-full max-w-md bg-blue-900/60 backdrop-blur-xl border border-white/20 p-8 rounded-3xl shadow-2xl transition-all duration-300">
         <div className="flex justify-center mb-8">
-          <div className="w-16 h-16 bg-gradient-to-tr from-indigo-500 to-fuchsia-500 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-6 transition-transform">
-             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          <div className="w-16 h-16  bg-gradient-to-tr from-blue-800 to-blue-400 rounded-2xl flex items-center justify-center shadow-lg transform rotate-3 hover:rotate-6 transition-transform">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-8 w-8 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              />
             </svg>
           </div>
         </div>
@@ -73,7 +85,9 @@ function LoginForm() {
     <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full">
       <div className="text-center">
         <h1 className="text-3xl font-bold text-white mb-2">Bem-vindo(a)</h1>
-        <p className="text-indigo-200 text-sm">Faça login para acessar o Collecionarium</p>
+        <p className="text-indigo-200 text-sm">
+          Faça login para acessar o Collecionarium
+        </p>
       </div>
 
       {error && (
@@ -84,7 +98,10 @@ function LoginForm() {
 
       <div className="space-y-4">
         <div>
-          <label className="block text-indigo-200 text-xs font-semibold uppercase tracking-wider mb-2" htmlFor="username">
+          <label
+            className="block text-indigo-200 text-xs font-semibold uppercase tracking-wider mb-2"
+            htmlFor="username"
+          >
             Usuário
           </label>
           <input
@@ -93,13 +110,16 @@ function LoginForm() {
             placeholder="Digite seu nome"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-indigo-300/50 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-indigo-300/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             required
           />
         </div>
 
         <div>
-          <label className="block text-indigo-200 text-xs font-semibold uppercase tracking-wider mb-2" htmlFor="password">
+          <label
+            className="block text-indigo-200 text-xs font-semibold uppercase tracking-wider mb-2"
+            htmlFor="password"
+          >
             Senha
           </label>
           <input
@@ -108,7 +128,7 @@ function LoginForm() {
             placeholder="Digite sua senha"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-indigo-300/50 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:border-transparent transition-all"
+            className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-indigo-300/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
             required
           />
         </div>
@@ -117,14 +137,32 @@ function LoginForm() {
       <button
         type="submit"
         disabled={isLoading}
-        className="w-full py-3 px-4 bg-gradient-to-r from-indigo-500 to-fuchsia-500 hover:from-indigo-400 hover:to-fuchsia-400 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-fuchsia-500 focus:ring-offset-2 focus:ring-offset-indigo-900 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center mt-2"
+        className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl shadow-lg transform transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-indigo-900 disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center mt-2"
       >
         {isLoading ? (
-          <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          <svg
+            className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            ></circle>
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+            ></path>
           </svg>
-        ) : "Entrar"}
+        ) : (
+          "Entrar"
+        )}
       </button>
     </form>
   );

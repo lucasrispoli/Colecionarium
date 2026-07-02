@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { AlbumSticker, AlbumStickerInput } from "../types/Album";
-import { createSticker, updateSticker } from "../services/album-sticker.service";
+import {
+  createSticker,
+  updateSticker,
+} from "../services/album-sticker.service";
 import MD5 from "crypto-js/md5";
 import encBase64 from "crypto-js/enc-base64";
 import encHex from "crypto-js/enc-hex";
@@ -28,8 +31,10 @@ export default function StickerFormModal({
     stickerToEdit?.description || "",
   );
   const [imageTag, setImageTag] = useState(stickerToEdit?.imageTag || "");
-  const [photo, setPhoto] = useState<string | null>(stickerToEdit?.photo || null);
-  
+  const [photo, setPhoto] = useState<string | null>(
+    stickerToEdit?.photo || null,
+  );
+
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -39,7 +44,9 @@ export default function StickerFormModal({
 
     // Validate if it's an image
     if (!file.type.startsWith("image/")) {
-      setError("Por favor, selecione um arquivo de imagem válido (png, jpg, jpeg).");
+      setError(
+        "Por favor, selecione um arquivo de imagem válido (png, jpg, jpeg).",
+      );
       return;
     }
     setError("");
@@ -48,7 +55,7 @@ export default function StickerFormModal({
     reader.onload = (event) => {
       const result = event.target?.result as string;
       setPhoto(result);
-      
+
       // Calculate MD5 of the base64 string
       const hash = MD5(result).toString(encHex);
       setImageTag(hash);
@@ -82,7 +89,9 @@ export default function StickerFormModal({
 
     try {
       // Remove data:image/...;base64, prefix
-      const base64Data = photo.includes("base64,") ? photo.split("base64,")[1] : photo;
+      const base64Data = photo.includes("base64,")
+        ? photo.split("base64,")[1]
+        : photo;
 
       const payload: AlbumStickerInput = {
         name,
@@ -90,7 +99,7 @@ export default function StickerFormModal({
         slot,
         imageTag,
         pageId,
-        photo: base64Data
+        photo: base64Data,
       };
 
       if (stickerToEdit) {
@@ -100,7 +109,9 @@ export default function StickerFormModal({
       }
       onSaved();
     } catch (err: any) {
-      setError(err.title || "Erro ao salvar figurinha. O número pode já estar em uso.");
+      setError(
+        err.title || "Erro ao salvar figurinha. O número pode já estar em uso.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -109,7 +120,9 @@ export default function StickerFormModal({
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm">
       <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-3xl p-8 max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-6">{stickerToEdit ? "Editar Figurinha" : "Nova Figurinha"}</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">
+          {stickerToEdit ? "Editar Figurinha" : "Nova Figurinha"}
+        </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {error && (
@@ -127,7 +140,7 @@ export default function StickerFormModal({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-white rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-800"
                 required
               />
             </div>
@@ -140,7 +153,7 @@ export default function StickerFormModal({
                 value={slot}
                 onChange={(e) => setSlot(parseInt(e.target.value))}
                 min={1}
-                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-800 text-white"
                 required
               />
             </div>
@@ -154,7 +167,7 @@ export default function StickerFormModal({
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               rows={3}
-              className="w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none"
+              className="text-white w-full px-4 py-2.5 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-800 resize-none"
             />
           </div>
 
@@ -173,7 +186,11 @@ export default function StickerFormModal({
           {photo && (
             <div className="mt-2 w-32 h-32 rounded-xl overflow-hidden border-2 border-dashed border-gray-300 dark:border-gray-700">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={photo} alt="Preview" className="w-full h-full object-cover" />
+              <img
+                src={photo}
+                alt="Preview"
+                className="w-full h-full object-cover"
+              />
             </div>
           )}
 
@@ -200,7 +217,7 @@ export default function StickerFormModal({
             <button
               type="submit"
               disabled={isLoading}
-              className="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-indigo-500/30 disabled:opacity-70"
+              className="flex-1 py-3 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl transition-all shadow-lg shadow-blue-800/30 disabled:opacity-70"
             >
               {isLoading ? "Salvando..." : "Salvar"}
             </button>

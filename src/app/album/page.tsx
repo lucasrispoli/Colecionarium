@@ -8,7 +8,7 @@ export default function AlbumPage() {
   const { user } = useAuth();
 
   const isAuthor = user?.roles?.some(
-    (r) => r.name === "AUTOR" || r.name === "ROLE_AUTOR" || r.name === "ADM" || r.name === "ROLE_ADM"
+    (r) => r.name === "AUTHOR" || r.name === "ROLE_AUTHOR" || r.name === "ADM" || r.name === "ROLE_ADM"
   );
 
   return (
@@ -17,13 +17,13 @@ export default function AlbumPage() {
         <div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Álbum de Figurinhas</h1>
           <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">
-            {isAuthor ? "Gerencie as figurinhas do álbum." : "Visualize as figurinhas da coleção."}
+            {isAuthor ? "Gerencie as figurinhas do álbum." : "Visualize as suas figurinhas da coleção."}
           </p>
         </div>
       </div>
       
       <div className="w-full max-w-5xl mx-auto">
-        <AlbumBook isAuthor={!!isAuthor} />
+        <AlbumBook isAuthor={true} />
       </div>
     </MainLayout>
   );

@@ -40,7 +40,9 @@ export default function AlbumBook({ isAuthor }: Props) {
   const [targetSlot, setTargetSlot] = useState<number | null>(null);
 
   const [isDetailOpen, setIsDetailOpen] = useState(false);
-  const [stickerToDetail, setStickerToDetail] = useState<AlbumSticker | null>(null);
+  const [stickerToDetail, setStickerToDetail] = useState<AlbumSticker | null>(
+    null,
+  );
 
   const fetchData = async () => {
     setIsLoading(true);
@@ -98,18 +100,18 @@ export default function AlbumBook({ isAuthor }: Props) {
   };
 
   const currentPage = pages[currentPageIndex];
-  const pageStickers = stickers.filter(s => s.pageId === currentPage?.id);
+  const pageStickers = stickers.filter((s) => s.pageId === currentPage?.id);
 
   const prevPage = () => {
     if (currentPageIndex > 0) {
-      setCurrentPageIndex(prev => prev - 1);
+      setCurrentPageIndex((prev) => prev - 1);
       setSelectedStickers([]);
     }
   };
 
   const nextPage = () => {
     if (currentPageIndex < pages.length - 1) {
-      setCurrentPageIndex(prev => prev + 1);
+      setCurrentPageIndex((prev) => prev + 1);
       setSelectedStickers([]);
     }
   };
@@ -117,12 +119,14 @@ export default function AlbumBook({ isAuthor }: Props) {
   const handleStickerClick = (sticker: AlbumSticker) => {
     if (!isAuthor) return;
     if (multiSelect) {
-      setSelectedStickers(prev => 
-        prev.includes(sticker.id) ? prev.filter(id => id !== sticker.id) : [...prev, sticker.id]
+      setSelectedStickers((prev) =>
+        prev.includes(sticker.id)
+          ? prev.filter((id) => id !== sticker.id)
+          : [...prev, sticker.id],
       );
     } else {
-      setSelectedStickers(prev => 
-        prev.includes(sticker.id) && prev.length === 1 ? [] : [sticker.id]
+      setSelectedStickers((prev) =>
+        prev.includes(sticker.id) && prev.length === 1 ? [] : [sticker.id],
       );
     }
   };
@@ -141,7 +145,7 @@ export default function AlbumBook({ isAuthor }: Props) {
 
   const openEditStickerForm = () => {
     if (selectedStickers.length !== 1) return;
-    const sticker = stickers.find(s => s.id === selectedStickers[0]);
+    const sticker = stickers.find((s) => s.id === selectedStickers[0]);
     if (sticker) {
       setTargetSlot(sticker.slot);
       setStickerToEdit(sticker);
@@ -218,7 +222,7 @@ export default function AlbumBook({ isAuthor }: Props) {
       {/* Controls */}
       <div className="flex flex-col sm:flex-row justify-between items-center bg-black/80 dark:bg-black/80 p-4 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-700">
         <div className="flex items-center gap-4">
-          <button 
+          <button
             onClick={prevPage}
             disabled={currentPageIndex === 0}
             className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 disabled:opacity-50 transition-colors"
@@ -232,7 +236,7 @@ export default function AlbumBook({ isAuthor }: Props) {
             {currentPage ? (currentPage.numberPage === 0 ? "Capa" : `Página ${currentPage.numberPage}`) : "Sem páginas"}
           </span>
 
-          <button 
+          <button
             onClick={nextPage}
             disabled={currentPageIndex >= pages.length - 1}
             className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 disabled:opacity-50 transition-colors"
@@ -254,10 +258,10 @@ export default function AlbumBook({ isAuthor }: Props) {
                   setMultiSelect(e.target.checked);
                   if (!e.target.checked) setSelectedStickers([]);
                 }}
-                className="w-5 h-5 accent-fuchsia-500 rounded"
+                className="w-5 h-5 accent-blue-500 rounded"
               />
             </label>
-            
+
             <div className="flex gap-2 border-l border-gray-200 dark:border-gray-700 pl-4">
               <button 
                 disabled={selectedStickers.length !== 1}
@@ -301,10 +305,12 @@ export default function AlbumBook({ isAuthor }: Props) {
         {currentPage ? (
           <>
             <div className="text-center mb-8 border-b border-gray-200 dark:border-gray-700 pb-4 w-full max-w-2xl">
-              <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-fuchsia-600">
-                {currentPage.title || currentPage.name}
+              <h2 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-tr from-blue-800 to-blue-400">
+                {currentPage.title}
               </h2>
-              <p className="text-gray-500 dark:text-gray-400 mt-2">{currentPage.description}</p>
+              <p className="text-gray-500 dark:text-gray-400 mt-2">
+                {currentPage.description}
+              </p>
               <div className="mt-4 text-xs font-bold text-gray-400 uppercase tracking-widest">
                 {currentPage.numberPage === 0 ? "Capa do Álbum" : `Página ${currentPage.numberPage}`}
               </div>
@@ -389,7 +395,7 @@ export default function AlbumBook({ isAuthor }: Props) {
       </div>
 
       {isStickerFormOpen && currentPage && (
-        <StickerFormModal 
+        <StickerFormModal
           pageId={currentPage.id}
           slotPreset={targetSlot}
           stickerToEdit={stickerToEdit}
@@ -402,7 +408,7 @@ export default function AlbumBook({ isAuthor }: Props) {
       )}
 
       {isDetailOpen && stickerToDetail && (
-        <StickerDetailModal 
+        <StickerDetailModal
           sticker={stickerToDetail}
           pageName={pages.find((p) => p.id === stickerToDetail.pageId)?.title || "Desconhecida"}
           onClose={() => setIsDetailOpen(false)}
